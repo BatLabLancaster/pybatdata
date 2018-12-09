@@ -28,6 +28,7 @@ app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 # Global variables
 file = []
 last_n_clicks = 0
+last_radio = 'Differential Voltage Analysis (DVA)'
 
 # Main Layout
 app.layout = html.Div(
@@ -93,10 +94,17 @@ def file_callback(list_of_contents, list_of_names, list_of_dates):
                 [State('type-radioitems','value')],
                 [Event('type-radioitems','change')])
 def dropdown_callback(value,radio):
-    if value == 'CE':
+    global last_radio
+    if last_radio != value:
+        last_radio = value
+        print 'dropdown select:', value, '\n'
+
+    if value == 'Coulombic Efficiency (CE)':
         return Select_Analysis_Radio(False,'A')
-    elif value == 'DVA':
+    elif value == 'Differential Voltage Analysis (DVA)':
         return Select_Analysis_Radio(False,'A')
+    else:
+        return Select_Analysis_Radio(True,radio)
 
 def regex_format(text):
     formated = ''
@@ -125,14 +133,23 @@ def cycles_callback(input_):
         return 'Selected Cycles = Invalid Format'
 
 
-def plot_callback(dropdown,title,xlabel,ylabel,cycles):
+def plot_callback(dropdown,title,xlabel,ylabel,cycles,mode):
     global file
-    if dropdown == 'CE':
-        print 'CE'
+    if dropdown == 'Coulombic Efficiency (CE)':
+        print 'Coulombic Efficiency (CE)'
         return Novonix_Protocol.CoulombicEfficiency(file,title,xlabel,ylabel)
-    elif dropdown == 'DVA':
-        print 'DVA'
+    elif dropdown == 'Differential Voltage Analysis (DVA)':
+        print 'Differential Voltage Analysis (DVA)'
         return Novonix_Protocol.DVA(file,title,xlabel,ylabel,cycles)
+    elif dropdown != '':
+        print dropdown
+        if mode == 'D':
+            mode = -1
+        elif mode == 'C':
+            mode = 1
+        else:
+            mode = 0
+        return Novonix_Protocol.plot2D(dropdown,file,title,xlabel,ylabel,cycles,mode)
 
 def cycletolist(formated):
     # 0. Variables
@@ -189,8 +206,10 @@ def cycletolist(formated):
      Input('title-input','value'),
      Input('xlabel-input','value'),
      Input('ylabel-input','value'),
-     Input('cycles-input','value')])
-def refresh_callback(n_clicks,value,title,xlabel,ylabel,cycles):
+     Input('cycles-input','value')],
+    [State('type-radioitems','value')],
+    [Event('type-radioitems','change')])
+def refresh_callback(n_clicks,value,title,xlabel,ylabel,cycles,mode):
     global last_n_clicks
     if n_clicks == last_n_clicks:
         return None
@@ -203,7 +222,7 @@ def refresh_callback(n_clicks,value,title,xlabel,ylabel,cycles):
         else:
             cycle_list = []
         print 'cycles: ',cycle_list
-        return plot_callback(value,title,xlabel,ylabel,cycle_list)
+        return plot_callback(str(value),title,xlabel,ylabel,cycle_list,mode)
 
 if __name__ == '__main__':
     app.run_server(debug=True)

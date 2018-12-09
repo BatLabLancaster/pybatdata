@@ -122,9 +122,15 @@ def Select_Analysis():
         SectionHTML(texts['section2']),
         SubsectionHTML(texts['subsec2a']),
         DroplistHTML('analysis-dropdown',
-                    [{'label': 'Differential Voltage Analysis (DVA)', 'value': 'DVA'},
-                    {'label': 'Coulombic Efficiency (CE)', 'value': 'CE'}],
-                    'DVA'),
+                    [{'label': 'Current (A)', 'value': 'Current (A)'},
+                     {'label': 'Potential (V)', 'value': 'Potential (V)'},
+                     {'label': 'Capacity (Ah)', 'value': 'Capacity (Ah)'},
+                     {'label': 'Temperature (°C)', 'value': "Temperature (°C)"},
+                     {'label': 'Circuit Temperature (°C)', 'value': "Circuit Temperature (°C)"},
+                     {'label': 'Energy (Wh)', 'value': 'Energy (Wh)'},
+                     {'label': 'Differential Voltage Analysis (DVA)', 'value': 'Differential Voltage Analysis (DVA)'},
+                     {'label': 'Coulombic Efficiency (CE)', 'value': 'Coulombic Efficiency (CE)'}],
+                    ''),
     ])
 
 def Select_Analysis_Cycle():

@@ -26,7 +26,6 @@ def RadioItemsHTML(radio_flag,radio):
                     options=[
                         {'label': 'Charge', 'value': 'C'},
                         {'label': 'Discharge', 'value': 'D'},
-                        {'label': 'Full Cycle', 'value': 'F'},
                         {'label': 'All Data', 'value': 'A'},
                     ],
                     value=radio,
