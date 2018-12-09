@@ -13,11 +13,6 @@ import numpy
 import scipy
 import scipy.signal
 
-from utils import *
-
-from analysisselect import *
-from plotinfoselect import *
-from ackandcreators import *
 from mylayouts import *
 from myinput import *
 from radioitems import *
@@ -26,9 +21,8 @@ from droplist import *
 from button import *
 from image import *
 
-import os, re, Defs
-from Defs import *
-from utils import *
+import os, re, defs
+from defs import *
 
 Novonix_Table = ["Time","Current (A)","Potential (V)","Capacity (Ah)","Temperature (C)","Circuit Temperature (C)","Coulombic Efficiency (Fg-1)/(Cycle number)","Differential Voltage Analysis (A/V)"]
 

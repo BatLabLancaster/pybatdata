@@ -10,8 +10,6 @@ from dash.dependencies import Input, Output, State
 
 import pandas as pd
 
-from utils import *
-
 def ButtonHTML(text_,id_):
     return html.Div(
             children=[html.Button(text_, 
@@ -22,7 +20,7 @@ def ButtonHTML(text_,id_):
                     'marginLeft':'10%', 'marginRight': '10%',
                     'marginBottom': '5%',
                     'textAlign': 'center',
-                    'color': colors['text'],
+                    'color': '#000000',
                     'fontFamily': 'Roboto Condensed',
                     'fontSize': '18',
                     'fontWeight': 'normal',

@@ -10,8 +10,6 @@ from dash.dependencies import Input, Output, State
 
 import pandas as pd
 
-from utils import *
-
 def RadioItemsHTML(radio_flag,radio):
     if radio_flag:
         return html.Div([
@@ -19,7 +17,7 @@ def RadioItemsHTML(radio_flag,radio):
                     id='type-radioitems',
                     style = {
                         'textAlign': 'left',
-                        'color': colors['text'],
+                        'color': '#000000',
                         'fontFamily': 'Roboto Condensed',
                         'fontSize': '18',
                         'fontWeight': 'normal',

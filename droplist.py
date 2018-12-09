@@ -10,8 +10,6 @@ from dash.dependencies import Input, Output, State
 
 import pandas as pd
 
-from utils import *
-
 def DroplistHTML(id_,options,value):
     return html.Div([
             dcc.Dropdown(

@@ -10,7 +10,5 @@ from dash.dependencies import Input, Output, State
 
 import pandas as pd
 
-from utils import *
-
 def ImageHTML(fig):
     return html.Img(src='data:image/png;base64,{}'.format(fig))
