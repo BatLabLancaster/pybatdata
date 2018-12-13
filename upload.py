@@ -35,7 +35,7 @@ def parse_contents(contents, filename, date):
         return html.Div([
             'There was an error processing this file.'
         ])
-
+    print date, date is not None
     return html.Div([
         html.H5(
             children=['Opened file: ',filename],
@@ -48,13 +48,13 @@ def parse_contents(contents, filename, date):
                 }
             ),
         html.H6(
-            children= ['Opened at: ',datetime.datetime.fromtimestamp(date)],
+            children= ['Opened at: {}'.format((datetime.datetime.fromtimestamp(date)).strftime('%x %X')) if date is not None else None],
             style={
                     'textAlign': 'center',
                     'color': colors['text'],
                     'fontFamily': 'Roboto Condensed',
-                    'fontSize': '18',
-                    'fontWeight': 'bold',
+                    'fontSize': '16',
+                    'fontWeight': 'normal',
                 }
             ),
     ])
