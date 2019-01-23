@@ -13,16 +13,16 @@ import numpy
 import scipy
 import scipy.signal
 
-from mylayouts import *
-from myinput import *
-from radioitems import *
-from upload import *
-from droplist import *
-from button import *
-from image import *
+from .mylayouts import *
+from .myinput import *
+from .radioitems import *
+from .upload import *
+from .droplist import *
+from .button import *
+from .image import *
 
-import os, re, defs
-from defs import *
+import os, re
+from . import defs
 
 Novonix_Table = ["Time","Current (A)","Potential (V)","Capacity (Ah)","Temperature (C)","Circuit Temperature (C)","Coulombic Efficiency (Fg-1)/(Cycle number)","Differential Voltage Analysis (A/V)"]
 
@@ -237,7 +237,7 @@ def plot2D(dropdown_select,file,title,xlabel,ylabel,cycles,mode):
 
 		# d. incrementing the cycle
 		cycle = cycle + 1
-		print cycle
+		print(cycle)
 		if(cycle-2 in cycles):
 			X.append(numpy.r_[0:len(y)])
 			Y.append(y)

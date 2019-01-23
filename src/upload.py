@@ -35,7 +35,7 @@ def parse_contents(contents, filename, date):
         return html.Div([
             'There was an error processing this file.'
         ])
-    print date, date is not None
+    print (date, date is not None)
     return html.Div([
         html.H5(
             children=['Opened file: ',filename],

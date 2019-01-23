@@ -9,12 +9,12 @@ import dash_html_components as html
 from dash.dependencies import Input, Output, State
 import pandas as pd
 
-from myinput import *
-from radioitems import *
-from upload import *
-from droplist import *
-from button import *
-from image import *
+from .myinput import *
+from .radioitems import *
+from .upload import *
+from .droplist import *
+from .button import *
+from .image import *
 
 def TitleHTML(children,color='#000000',fontSize='64'):
 	return html.H1(
