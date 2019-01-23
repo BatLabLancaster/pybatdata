@@ -10,13 +10,13 @@ import dash_core_components as dcc
 import dash_html_components as html
 
 # Dash Python - My HTML Interface
-from mylayouts import *
-from myinput import *
-from radioitems import *
-from upload import *
-from droplist import *
-from button import *
-from image import *
+from .mylayouts import *
+from .myinput import *
+from .radioitems import *
+from .upload import *
+from .droplist import *
+from .button import *
+from .image import *
 
 texts = {
     'introduction': ['Welcome to the Gluettery platform.',

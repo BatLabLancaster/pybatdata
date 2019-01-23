@@ -14,12 +14,11 @@ from dash.dependencies import Input, Output, State, Event
 import pandas as pd
 
 # Dash Python - My HTML Interface
-from header import *
-from body import *
-from footpage import *
-
+from src.header import *
+from src.body import *
+from src.footpage import *
 # Protocols, Plots and Utils
-import Novonix_Protocol
+from src import Novonix_Protocol
 
 # Dash External Style Import
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
@@ -97,7 +96,7 @@ def dropdown_callback(value,radio):
     global last_radio
     if last_radio != value:
         last_radio = value
-        print 'dropdown select:', value, '\n'
+        print('dropdown select:', value, '\n')
 
     if value == 'Coulombic Efficiency (CE)':
         return Select_Analysis_Radio(False,'A')
@@ -115,7 +114,7 @@ def regex_format(text):
             formated += c
         elif re.match('\d',c) != None:
             formated += c
-    print formated
+    print(formated)
     return formated
 
 @app.callback(Output(component_id='cycles-select',component_property='children'),
@@ -136,13 +135,13 @@ def cycles_callback(input_):
 def plot_callback(dropdown,title,xlabel,ylabel,cycles,mode):
     global file
     if dropdown == 'Coulombic Efficiency (CE)':
-        print 'Coulombic Efficiency (CE)'
+        print('Coulombic Efficiency (CE)')
         return Novonix_Protocol.CoulombicEfficiency(file,title,xlabel,ylabel)
     elif dropdown == 'Differential Voltage Analysis (DVA)':
-        print 'Differential Voltage Analysis (DVA)'
+        print('Differential Voltage Analysis (DVA)')
         return Novonix_Protocol.DVA(file,title,xlabel,ylabel,cycles)
     elif dropdown != '':
-        print dropdown
+        print(dropdown)
         if mode == 'D':
             mode = -1
         elif mode == 'C':
@@ -221,7 +220,7 @@ def refresh_callback(n_clicks,value,title,xlabel,ylabel,cycles,mode):
             cycle_list.sort()
         else:
             cycle_list = []
-        print 'cycles: ',cycle_list
+        print('cycles: ',cycle_list)
         return plot_callback(str(value),title,xlabel,ylabel,cycle_list,mode)
 
 if __name__ == '__main__':
