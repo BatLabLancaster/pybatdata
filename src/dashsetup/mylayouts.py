@@ -1,20 +1,7 @@
-# -*- coding: utf-8 -*-
-import base64
-import datetime
-import io
-
+# Structure of titles and sections
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
-from dash.dependencies import Input, Output, State
-import pandas as pd
-
-from .myinput import *
-from .radioitems import *
-from .upload import *
-from .droplist import *
-from .button import *
-from .image import *
 
 def TitleHTML(children,color='#000000',fontSize='64'):
 	return html.H1(

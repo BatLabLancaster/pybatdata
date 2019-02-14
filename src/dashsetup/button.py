@@ -1,14 +1,6 @@
-# -*- coding: utf-8 -*-
-import base64
-import datetime
-import io
-
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
-from dash.dependencies import Input, Output, State
-
-import pandas as pd
 
 def ButtonHTML(text_,id_):
     return html.Div(

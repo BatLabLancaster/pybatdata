@@ -1,8 +1,4 @@
-# -*- coding: utf-8 -*-
-# System and Standard Libraries
-import base64
-import datetime
-import io
+# Application structure
 
 # Dash Python - HTML Interface Libraries
 import dash
@@ -11,12 +7,11 @@ import dash_html_components as html
 
 # Dash Python - My HTML Interface
 from .mylayouts import *
-from .myinput import *
-from .radioitems import *
+from .myinput import InputTextHTML
+from .radioitems import RadioItemsHTML
 from .upload import *
-from .droplist import *
-from .button import *
-from .image import *
+from .droplist import DroplistHTML
+from .button import ButtonHTML
 
 texts = {
     'introduction': ['Welcome to the Gluettery platform.',
@@ -77,7 +72,6 @@ def Body():
                 'backgroundColor': colors['background'],
             }, 
     )
-
 
 
 def Introduction():

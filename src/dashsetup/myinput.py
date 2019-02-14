@@ -1,14 +1,8 @@
-# -*- coding: utf-8 -*-
-import base64
-import datetime
-import io
-
+# Structure for the example text in boxes
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output, State
-
-import pandas as pd
 
 def InputTextHTML(id_,placeholder_):
     return dcc.Input(

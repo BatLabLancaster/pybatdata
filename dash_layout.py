@@ -14,9 +14,9 @@ from dash.dependencies import Input, Output, State, Event
 import pandas as pd
 
 # Dash Python - My HTML Interface
-from src.header import *
-from src.body import *
-from src.footpage import *
+from src.dashsetup.header import Header
+from src.dashsetup.body import *
+from src.dashsetup.footpage import FootPage
 # Protocols, Plots and Utils
 from src import Novonix_Protocol
 
@@ -50,6 +50,7 @@ app.layout = html.Div(
 
 # Callbacks
 def get_csv(contents, filename, date):
+    print(contents)
     content_type, content_string = contents.split(',')
     decoded = base64.b64decode(content_string)
     try:

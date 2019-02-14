@@ -1,13 +1,8 @@
-# -*- coding: utf-8 -*-
-import base64
-import datetime
-import io
-
+# Structure for the header
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
-
-from .mylayouts import *
+from .mylayouts import TitleLeftHTML
 
 texts = {
     'title': 'Gluettery',
@@ -16,7 +11,6 @@ colors = {
     'background': '#FFFFFF',
     'text': '#000000'
 }
-
 def Header():
     return html.Div(
         children = [

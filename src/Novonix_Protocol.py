@@ -13,13 +13,12 @@ import numpy
 import scipy
 import scipy.signal
 
-from .mylayouts import *
-from .myinput import *
-from .radioitems import *
-from .upload import *
-from .droplist import *
-from .button import *
-from .image import *
+from .dashsetup.mylayouts import *
+from .dashsetup.myinput import *
+from .dashsetup.radioitems import *
+from .dashsetup.upload import *
+from .dashsetup.droplist import *
+from .dashsetup.button import *
 
 import os, re
 from . import defs
