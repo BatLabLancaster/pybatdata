@@ -17,8 +17,11 @@ import pandas as pd
 from src.dashsetup.header import Header
 from src.dashsetup.body import *
 from src.dashsetup.footpage import FootPage
-# Protocols, Plots and Utils
-from src import Novonix_Protocol
+# Functions and Plots
+from src.dashsetup.plot2D import plot2D
+from src import *
+# IO code
+from src.iobat.test_file import get_csv
 
 # Dash External Style Import
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
@@ -48,37 +51,18 @@ app.layout = html.Div(
     ]
 )
 
-# Callbacks
-def get_csv(contents, filename, date):
-    print(contents)
-    content_type, content_string = contents.split(',')
-    decoded = base64.b64decode(content_string)
-    try:
-        if 'csv' in filename:
-            # Assume that the user uploaded a CSV file
-            df = pd.read_csv(
-                io.StringIO(decoded.decode('utf-8')),
-                error_bad_lines = False)
-        elif 'xls' in filename:
-            # Assume that the user uploaded an excel file
-            df = pd.read_excel(
-                io.BytesIO(decoded),
-                error_bad_lines = False)
-    except Exception as e:
-        print(e)
-        return html.Div([
-            'There was an error processing this file.'
-        ])
-
-    print(df)
-    return df.to_dict('records')
-
+# Callbacks (interactive parts of the interface)
+###################
+# Load a file
+###################
 @app.callback(Output(component_id='output-data-upload', component_property='children'),
                   [Input(component_id='upload-data', component_property='contents')],
                   [State('upload-data', 'filename'),
                    State('upload-data', 'last_modified')])
 def file_callback(list_of_contents, list_of_names, list_of_dates):
-    print(list_of_names)
+    print(len(list_of_dates))
+    print(type(list_of_contents))
+#    print('names=',list_of_names)
     if list_of_contents is not None:
         children = [
             parse_contents(c, n, d) for c, n, d in
@@ -89,6 +73,9 @@ def file_callback(list_of_contents, list_of_names, list_of_dates):
 
         return children 
 
+########################
+# Selection of analysis
+########################
 @app.callback(Output(component_id='analysis-radio',component_property='children'),
                 [Input(component_id='analysis-dropdown',component_property='value')],
                 [State('type-radioitems','value')],
@@ -105,7 +92,11 @@ def dropdown_callback(value,radio):
         return Select_Analysis_Radio(False,'A')
     else:
         return Select_Analysis_Radio(True,radio)
-
+    
+###################
+# Cycle selection
+###################
+# Function used to interpret the input
 def regex_format(text):
     formated = ''
     for c in text:
@@ -132,15 +123,17 @@ def cycles_callback(input_):
     else:
         return 'Selected Cycles = Invalid Format'
 
-
+###################
+# Plot
+###################
 def plot_callback(dropdown,title,xlabel,ylabel,cycles,mode):
     global file
     if dropdown == 'Coulombic Efficiency (CE)':
         print('Coulombic Efficiency (CE)')
-        return Novonix_Protocol.CoulombicEfficiency(file,title,xlabel,ylabel)
+        return src.coulombic_efficiency(file,title,xlabel,ylabel)
     elif dropdown == 'Differential Voltage Analysis (DVA)':
         print('Differential Voltage Analysis (DVA)')
-        return Novonix_Protocol.DVA(file,title,xlabel,ylabel,cycles)
+        return src.DVA(file,title,xlabel,ylabel,cycles)
     elif dropdown != '':
         print(dropdown)
         if mode == 'D':
@@ -149,7 +142,7 @@ def plot_callback(dropdown,title,xlabel,ylabel,cycles,mode):
             mode = 1
         else:
             mode = 0
-        return Novonix_Protocol.plot2D(dropdown,file,title,xlabel,ylabel,cycles,mode)
+        return src.dashsetup.plot2D(dropdown,file,title,xlabel,ylabel,cycles,mode)
 
 def cycletolist(formated):
     # 0. Variables

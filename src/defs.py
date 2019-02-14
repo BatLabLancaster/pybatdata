@@ -1,11 +1,10 @@
-# Constants and Definitions
-INF = 99999
-FULL_CYCLE = 2
-CHARGE_CYCLE = 1
-DISCHARGE_CYCLE = -1
+#############To delete
+Novonix_Table = ["Time","Current (A)","Potential (V)","Capacity (Ah)","Temperature (C)","Circuit Temperature (C)","Coulombic Efficiency (Fg-1)/(Cycle number)","Differential Voltage Analysis (A/V)"]
 
-# Protocols Definitions
-Plot_Protocols = ["Novonix","BaSyTec","Xanes"]
-Plot_Protocol_Novonix = 1
-Plot_Protocol_BaSyTec = 2
-Plot_Protocol_Xanes = 3
+CURRENT      = 5
+POTENTIAL    = 6
+CAPACITY     = 7
+TEMPERATURE  = 8
+CIRCUIT_TEMP = 9
+COULUMBIC 	 = 10
+DVA 		 = 11

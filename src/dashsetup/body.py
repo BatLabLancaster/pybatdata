@@ -20,8 +20,8 @@ texts = {
                     '\"Obrigado e de nada\"! '],
     'section1': '1. Select your file',
     'section2': '2. Select your analysis',
-    'subsec2a': 'a) Data analysis',
-    'subsec2b': 'b) Cycles',
+    'subsec2a': 'a) Type of analysis:',
+    'subsec2b': 'b) Cycles to be evaluated:',
     'subsec2c': 'c) Data and Cycle Type',
     'section3': '3. Enter your plot information',
     'subsec3a': 'a) Plot Title',
@@ -132,7 +132,7 @@ def Select_Analysis_Cycle():
         id = 'analysis-cycle',
         children = [
             SubsectionHTML(texts['subsec2b']),
-            InputTextHTML('cycles-input','Select Cycles to evaluate... single: "1", multi: "1, 3, 5", range: "1-5"'),
+            InputTextHTML('cycles-input','Single: "1"; Multi: "1, 3, 5", Range: "1-5"'),
             SystemAnswerHTML('Selected Cycles = Empty','cycles-select'),
             SystemAnswerHTML('* Unnecessary for: Coulombic Efficiency plot.','cycles-select-un')
         ])
