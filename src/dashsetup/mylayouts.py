@@ -151,3 +151,11 @@ def ThreeColumnsHTML(children):
             html.Div(children=children[2],
                 style={'textAlign': 'center','width': '33%', 'display': 'inline-block'}),
         ])
+
+def reportHTML(log):
+        return html.Div(
+                id = 'report-log',
+                children = [
+                        log
+                ])
+

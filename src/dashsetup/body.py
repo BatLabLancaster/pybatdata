@@ -5,11 +5,12 @@ import dash
 import dash_core_components as dcc
 import dash_html_components as html
 
+from ..iobat.test_file import test_file
+
 # Dash Python - My HTML Interface
 from .mylayouts import *
-from .myinput import InputTextHTML
+from .myinput import InputTextHTML,InputPathHTML
 from .radioitems import RadioItemsHTML
-from .upload import *
 from .droplist import DroplistHTML
 from .button import ButtonHTML
 
@@ -18,7 +19,8 @@ texts = {
                     'This platform was created in order to facilitate and stimulate the production of interactive graphics of battery-related data. ',
                     'As an open source platform, all collaboration and tips are more than welcome. ',
                     '\"Obrigado e de nada\"! '],
-    'section1': '1. Select your file',
+    'section1': '1. Path to your file',
+    'subsec1a': 'Once you have introduced the path, press Enter',
     'section2': '2. Select your analysis',
     'subsec2a': 'a) Type of analysis:',
     'subsec2b': 'b) Cycles to be evaluated:',
@@ -45,7 +47,7 @@ def Body():
             # Section 1
             #- File Selection and Load
             Select_File(),
-
+            
             # Section 2
             #- Analysis Parameters Selection
             Select_Analysis(),
@@ -59,20 +61,24 @@ def Body():
             # Plot Button
             ButtonHTML('PLOT','plot_button'),
             html.Div(id='plot_click'),
-        ], style={ 
-                'width': '60%',
-                'height': '90%',
-                'marginLeft': '20%',
-                'marginRight': '20%',
-                'marginTop': '5%',
-                'marginBotton': '5%',
-                'borderWidth': '1px',
-                'borderStyle': 'outset',
-                'borderRadius': '5px',
-                'backgroundColor': colors['background'],
-            }, 
-    )
+            
+            #- Log box
+            log_box(),
 
+        ], style={ 
+            'width': '60%',
+            'height': '85%',
+            'marginLeft': '20%',
+            'marginRight': '20%',
+            'marginTop': '5%',
+            'marginBotton': '5%',
+            'borderWidth': '1px',
+            'borderStyle': 'outset',
+            'borderRadius': '5px',
+            'backgroundColor': colors['background'],
+        },
+
+    )
 
 def Introduction():
     return html.Div(
@@ -93,23 +99,32 @@ def Introduction():
         )
 
 def Select_File():
-    return html.Div(
-                [html.Div(
-                    [SectionHTML(texts['section1'])],
-                    style={ 'width': '100%', 
-                            'height': '100%',
-                            'backgroundColor': colors['background'],
-                            }
-                    ),
-                html.Div(
-                    [UploadHTML('upload-data')],
-                    style={ 'width': '50%', 
-                            'height': '100%',
-                            'backgroundColor': colors['background'],
-                            'marginLeft': '25%', 'marginRight': '25%'
-                            }
-                    )]
-                )
+    text_path = "C:\\path\\2\\file   or   /c/path/2/file"
+    return html.Div([
+        SectionHTML(texts['section1']),
+        SubTitleHTML(texts['subsec1a']),
+        InputPathHTML('path2file-input',text_path),
+        html.Div(id='path2file-submit',
+                 style={
+                     'textAlign': 'center',
+                     'color': colors['text'],
+                     'fontFamily': 'Roboto Condensed',
+                            'fontSize': '16',
+                     'fontWeight': 'normal',
+                 }
+        )
+                ])
+
+def File_Info(filename):
+    if (filename is None or filename == ""):
+        return u'''No path to file has been input yet.'''
+    else:
+        problem, tester = test_file(filename)
+        
+        if problem:
+            return u'''There was an error processing "{}"'''.format(filename)
+        else:
+            return u'''File: "{}", Tester: "{}"'''.format(filename,tester)
 
 def Select_Analysis():
     return html.Div([
@@ -160,3 +175,23 @@ def Select_Plot_Information():
         SectionHTML(texts['section3']),
         ThreeColumnsHTML([column1,column2,column3]),
     ])
+
+def log_box():
+    return html.Div([
+        SectionHTML('Log box'),
+        html.P(id='report-log',
+               style={ 
+                   'width': '60%',
+                   'height': '5%',
+                   'marginLeft': '20%',
+                   'marginRight': '20%',
+                   'marginTop': '5%',
+                   'marginBotton': '5%',
+                   'borderWidth': '1px',
+                   'borderStyle': 'outset',
+                   'borderRadius': '5px',
+                   'backgroundColor': colors['background'],
+        },
+               
+        )
+        ])

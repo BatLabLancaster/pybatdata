@@ -11,7 +11,6 @@ import scipy.signal
 from .mylayouts import *
 from .myinput import InputTextHTML
 from .radioitems import RadioItemsHTML
-from .upload import *
 from .droplist import DroplistHTML
 from .button import ButtonHTML
 

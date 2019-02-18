@@ -20,15 +20,13 @@ from src.dashsetup.footpage import FootPage
 # Functions and Plots
 from src.dashsetup.plot2D import plot2D
 from src import *
-# IO code
-from src.iobat.test_file import get_csv
 
 # Dash External Style Import
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
 # Global variables
-file = []
+path2file = []
 last_n_clicks = 0
 last_radio = 'Differential Voltage Analysis (DVA)'
 
@@ -52,26 +50,15 @@ app.layout = html.Div(
 )
 
 # Callbacks (interactive parts of the interface)
-###################
-# Load a file
-###################
-@app.callback(Output(component_id='output-data-upload', component_property='children'),
-                  [Input(component_id='upload-data', component_property='contents')],
-                  [State('upload-data', 'filename'),
-                   State('upload-data', 'last_modified')])
-def file_callback(list_of_contents, list_of_names, list_of_dates):
-    print(len(list_of_dates))
-    print(type(list_of_contents))
-#    print('names=',list_of_names)
-    if list_of_contents is not None:
-        children = [
-            parse_contents(c, n, d) for c, n, d in
-            zip(list_of_contents, list_of_names, list_of_dates)]
-        
-        global file
-        file = get_csv(list_of_contents[0], list_of_names[0], list_of_dates[0])
-
-        return children 
+########################
+# Input path to file
+########################
+@app.callback(Output('path2file-submit','children'),
+                [Input('path2file-input','n_submit')],    
+                [State('path2file-input','value')],
+                )
+def path2file_callback(ns,inpath):
+    return File_Info(inpath)
 
 ########################
 # Selection of analysis
@@ -126,14 +113,13 @@ def cycles_callback(input_):
 ###################
 # Plot
 ###################
-def plot_callback(dropdown,title,xlabel,ylabel,cycles,mode):
-    global file
+def plot_callback(dropdown,title,xlabel,ylabel,cycles,mode,path2file):
     if dropdown == 'Coulombic Efficiency (CE)':
         print('Coulombic Efficiency (CE)')
-        return src.coulombic_efficiency(file,title,xlabel,ylabel)
+        return src.coulombic_efficiency(path2file,title,xlabel,ylabel)
     elif dropdown == 'Differential Voltage Analysis (DVA)':
         print('Differential Voltage Analysis (DVA)')
-        return src.DVA(file,title,xlabel,ylabel,cycles)
+        return src.DVA(path2file,title,xlabel,ylabel,cycles)
     elif dropdown != '':
         print(dropdown)
         if mode == 'D':
@@ -142,7 +128,7 @@ def plot_callback(dropdown,title,xlabel,ylabel,cycles,mode):
             mode = 1
         else:
             mode = 0
-        return src.dashsetup.plot2D(dropdown,file,title,xlabel,ylabel,cycles,mode)
+        return src.dashsetup.plot2D(dropdown,path2file,title,xlabel,ylabel,cycles,mode)
 
 def cycletolist(formated):
     # 0. Variables
@@ -199,10 +185,11 @@ def cycletolist(formated):
      Input('title-input','value'),
      Input('xlabel-input','value'),
      Input('ylabel-input','value'),
-     Input('cycles-input','value')],
+     Input('cycles-input','value'),
+     Input('path2file-input','value'),],
     [State('type-radioitems','value')],
     [Event('type-radioitems','change')])
-def refresh_callback(n_clicks,value,title,xlabel,ylabel,cycles,mode):
+def refresh_callback(n_clicks,value,title,xlabel,ylabel,cycles,mode,path2file):
     global last_n_clicks
     if n_clicks == last_n_clicks:
         return None
@@ -215,7 +202,7 @@ def refresh_callback(n_clicks,value,title,xlabel,ylabel,cycles,mode):
         else:
             cycle_list = []
         print('cycles: ',cycle_list)
-        return plot_callback(str(value),title,xlabel,ylabel,cycle_list,mode)
+        return plot_callback(str(value),title,xlabel,ylabel,cycle_list,mode,path2file)
 
 if __name__ == '__main__':
     app.run_server(debug=True)
