@@ -6,6 +6,7 @@ import dash_core_components as dcc
 import dash_html_components as html
 
 from ..iobat.test_file import test_file
+from ..iobat.fileclass import fileclass
 
 # Dash Python - My HTML Interface
 from .mylayouts import *
@@ -61,9 +62,6 @@ def Body():
             # Plot Button
             ButtonHTML('PLOT','plot_button'),
             html.Div(id='plot_click'),
-            
-            #- Log box
-            log_box(),
 
         ], style={ 
             'width': '60%',
@@ -115,16 +113,18 @@ def Select_File():
         )
                 ])
 
-def File_Info(filename):
+def File_Info():
+    filename = fileclass.name
+
     if (filename is None or filename == ""):
         return u'''No path to file has been input yet.'''
     else:
-        problem, tester = test_file(filename)
+        test_file(dash=True)
         
-        if problem:
+        if fileclass.problem:
             return u'''There was an error processing "{}"'''.format(filename)
         else:
-            return u'''File: "{}", Tester: "{}"'''.format(filename,tester)
+            return u'''File: "{}", Tester: "{}"'''.format(filename,fileclass.tester)
 
 def Select_Analysis():
     return html.Div([
@@ -175,23 +175,3 @@ def Select_Plot_Information():
         SectionHTML(texts['section3']),
         ThreeColumnsHTML([column1,column2,column3]),
     ])
-
-def log_box():
-    return html.Div([
-        SectionHTML('Log box'),
-        html.P(id='report-log',
-               style={ 
-                   'width': '60%',
-                   'height': '5%',
-                   'marginLeft': '20%',
-                   'marginRight': '20%',
-                   'marginTop': '5%',
-                   'marginBotton': '5%',
-                   'borderWidth': '1px',
-                   'borderStyle': 'outset',
-                   'borderRadius': '5px',
-                   'backgroundColor': colors['background'],
-        },
-               
-        )
-        ])

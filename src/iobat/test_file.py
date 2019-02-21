@@ -1,22 +1,23 @@
-import sys, os
-from pathlib import Path
-from ..dashsetup.mylayouts import reportHTML
+import sys, os.path
+from .fileclass import fileclass
 
-def test_file(infile):
-    problem = False
+def test_file(dash=False):
+    infile = fileclass.name
     tester = None
 
-    # Extract the path and file name
-    dirname, fname = os.path.split(os.path.abspath(infile))
-
-    # Modify the slashes in the input path if needed
-    file_to_open = Path(dirname) / fname #; print(file_to_open)
-
     # Test if the file exists
-    if(not os.path.isfile(file_to_open)):
-        problem = True
+    if(not os.path.isfile(infile)):
+        fileclass.problem = True
 
-        reportHTML('STOP function test_file \n'+\
-                   'REASON Input file not found: '+str(infile))       
+        log = 'STOP function test_file \n'+\
+            'REASON Input file not found: '+infile
+        if dash:
+            print(log)
+        else:
+            sys.exit(log)       
 
-    return problem,tester
+    fileclass.tester = tester
+
+    #
+    print('it exists')
+    return 

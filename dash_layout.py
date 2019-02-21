@@ -2,7 +2,7 @@
 # System and Standard Libraries
 import base64
 import datetime
-import io
+import io, os
 import re
 from copy import deepcopy
 
@@ -11,13 +11,16 @@ import dash
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output, State, Event
-import pandas as pd
+#import pandas as pd
+
+from pathlib import Path
 
 # Dash Python - My HTML Interface
 from src.dashsetup.header import Header
 from src.dashsetup.body import *
 from src.dashsetup.footpage import FootPage
 # Functions and Plots
+from src.iobat.fileclass import fileclass
 from src.dashsetup.plot2D import plot2D
 from src import *
 
@@ -26,7 +29,6 @@ external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
 # Global variables
-path2file = []
 last_n_clicks = 0
 last_radio = 'Differential Voltage Analysis (DVA)'
 
@@ -58,7 +60,16 @@ app.layout = html.Div(
                 [State('path2file-input','value')],
                 )
 def path2file_callback(ns,inpath):
-    return File_Info(inpath)
+    if (inpath is not None and inpath != ""):
+        # Extract the path and file name
+        #dirname, fname = os.path.split(os.path.abspath(inpath))
+        dirname, fname = os.path.split(inpath)
+        # Modify the slashes in the input path if needed
+        filename = Path(dirname) / fname #; print(filename)
+        
+        fileclass.name = str(filename)
+
+    return File_Info()
 
 ########################
 # Selection of analysis
@@ -203,6 +214,7 @@ def refresh_callback(n_clicks,value,title,xlabel,ylabel,cycles,mode,path2file):
             cycle_list = []
         print('cycles: ',cycle_list)
         return plot_callback(str(value),title,xlabel,ylabel,cycle_list,mode,path2file)
+
 
 if __name__ == '__main__':
     app.run_server(debug=True)
