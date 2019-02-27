@@ -2,7 +2,7 @@
 # System and Standard Libraries
 import base64
 import datetime
-import io, os
+import io, os, sys
 import re
 from copy import deepcopy
 
@@ -68,7 +68,6 @@ def path2file_callback(ns,inpath):
         filename = Path(dirname) / fname #; print(filename)
         
         fileclass.name = str(filename)
-
     return File_Info()
 
 ########################

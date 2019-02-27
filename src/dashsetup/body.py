@@ -97,7 +97,7 @@ def Introduction():
         )
 
 def Select_File():
-    text_path = "C:\\path\\2\\file   or   /c/path/2/file"
+    text_path = "C:\\path\\2\\file   or   C:/path/2/file"
     return html.Div([
         SectionHTML(texts['section1']),
         SubTitleHTML(texts['subsec1a']),
@@ -120,7 +120,7 @@ def File_Info():
         return u'''No path to file has been input yet.'''
     else:
         test_file(dash=True)
-        
+        print('fileclass.problem ={}'.format(fileclass.problem))
         if fileclass.problem:
             return u'''There was an error processing "{}"'''.format(filename)
         else:
