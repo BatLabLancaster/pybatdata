@@ -120,7 +120,7 @@ def File_Info():
         return u'''No path to file has been input yet.'''
     else:
         test_file(dash=True)
-        print('fileclass.problem ={}'.format(fileclass.problem))
+
         if fileclass.problem:
             return u'''There was an error processing "{}"'''.format(filename)
         else:

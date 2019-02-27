@@ -1,4 +1,18 @@
+from .fileclass import fileclass
 from .logs import stop_log
+
+"""A python module to add information to the Novonix data.
+
+.. moduleauthor:: Violeta Gonzalez-Perez <violegp@gmail.com>
+
+"""
+
+col_step = 'Step Number'
+col_tstep = 'Step Time (h)'
+
+state_col = 'State (0=Start 1=Regular 2=End)'
+cycle_col = 'CycleNr'
+line_col = 'Line'
 
 def novonix_tests(dash=False):
     # Further novonix tests
