@@ -1,4 +1,4 @@
-# batlab_dash
+# pybatdata
 
 To run the GUI: `python dash_layout.py`
 
@@ -9,7 +9,7 @@ Note than a folder __pycache__ will be created when you run the app. However, th
 TO DO: An example file from Novonix is provided within the example folder.
 
 ## Requirements
-python3 (it might also work with python2).
+The code runs in Python 3 and it requires the following libraries that can be install using `pip`: numpy, pathlib, preparenovonix.
 dash: installation guides to be found [here](https://dash.plot.ly/installation). 
 
 ## Acknowledgements

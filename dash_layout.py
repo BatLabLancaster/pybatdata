@@ -131,7 +131,7 @@ def plot_callback(dropdown,title,xlabel,ylabel,cycles,mode,path2file):
         print('Differential Voltage Analysis (DVA)')
         return src.DVA(path2file,title,xlabel,ylabel,cycles)
     elif dropdown != '':
-        print(dropdown)
+        print('dropdown=',dropdown)
         if mode == 'D':
             mode = -1
         elif mode == 'C':
