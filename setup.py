@@ -15,7 +15,7 @@ desc = (
 setup(
     name="pybatdata",
     version="0.0.2",
-    packages=find_packages(exclude=("tests",)),
+    packages=find_packages(exclude=("tests",),
     description=desc,
     long_description=README,
     long_description_content_type="text/markdown",
