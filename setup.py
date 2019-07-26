@@ -5,10 +5,10 @@ from setuptools import find_packages, setup
 HERE = pathlib.Path(__file__).parent
 
 # The text of the README file
-README = (HERE / "README.md").read_text()
+README = (HERE / "README.rst").read_text()
 
 desc = (
-    "Analyse data from battery testers."
+    "Analyse battery data. "
 )
 
 # This call to setup() does all the work
@@ -18,7 +18,7 @@ setup(
     packages=find_packages(exclude=("tests",)),
     description=desc,
     long_description=README,
-    long_description_content_type="text/markdown",
+    long_description_content_type="text/x-rst",
     url="https://github.com/BatLabLancaster/pybatdata",
     license="MIT",
     classifiers=[
@@ -29,8 +29,7 @@ setup(
     include_package_data=True,
     install_requires=[
         "numpy>=1.15",
-        "preparenovonix==1.0.1",
-        # Note: Matplotlib is used for some plots
+        # Note: Matplotlib is loaded for test plot
         "matplotlib>=3.0",
     ],
 )

@@ -16,13 +16,13 @@ from dash.dependencies import Input, Output, State, Event
 from pathlib import Path
 
 # Dash Python - My HTML Interface
-from pybatdata.dashsetup.header import Header
-from pybatdata.dashsetup.body import *
-from pybatdata.dashsetup.footpage import FootPage
+from dashsetup.header import Header
+from dashsetup.body import *
+from dashsetup.footpage import FootPage
 # Functions and Plots
-from pybatdata.iobat.fileclass import fileclass
-from pybatdata.dashsetup.plot2D import plot2D
-from pybatdata import *
+from iobat.fileclass import fileclass
+from dashsetup.plot2D import plot2D
+#from pybatdata import *
 
 def onefile():
     # Dash External Style Import
@@ -89,7 +89,7 @@ def onefile():
             elif value == 'Differential Voltage Analysis (DVA)':
                 return Select_Analysis_Radio(False,'A')
             else:
-        return Select_Analysis_Radio(True,radio)
+                return Select_Analysis_Radio(True,radio)
     
     ###################
     # Cycle selection
@@ -127,10 +127,10 @@ def onefile():
     def plot_callback(dropdown,title,xlabel,ylabel,cycles,mode,path2file):
         if dropdown == 'Coulombic Efficiency (CE)':
             print('Coulombic Efficiency (CE)')
-            return pybatdata.coulombic_efficiency(path2file,title,xlabel,ylabel)
+            return coulombic_efficiency(path2file,title,xlabel,ylabel)
         elif dropdown == 'Differential Voltage Analysis (DVA)':
             print('Differential Voltage Analysis (DVA)')
-            return pybatdata.DVA(path2file,title,xlabel,ylabel,cycles)
+            return DVA(path2file,title,xlabel,ylabel,cycles)
         elif dropdown != '':
             print('dropdown=',dropdown)
             if mode == 'D':
@@ -139,7 +139,7 @@ def onefile():
                 mode = 1
             else:
                 mode = 0
-            return pybatdata.dashsetup.plot2D(dropdown,path2file,title,xlabel,ylabel,cycles,mode)
+            return dashsetup.plot2D(dropdown,path2file,title,xlabel,ylabel,cycles,mode)
 
     def cycletolist(formated):
         # 0. Variables

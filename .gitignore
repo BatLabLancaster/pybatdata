@@ -3,6 +3,7 @@ example_data/compare_vct.pdf
 __pycache__/
 *.py[cod]
 *$py.class
+plot.pdf
 
 # C extensions
 *.so
