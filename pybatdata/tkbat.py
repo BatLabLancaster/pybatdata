@@ -12,5 +12,8 @@ def select_files():
     
     return
 
+def select_analysis():
+    return
+    
 if __name__ == "__main__":
     load_files()
