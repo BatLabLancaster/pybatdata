@@ -53,7 +53,7 @@ def count_header_lines():
     return
 
 
-def read_col_names(infile,hnl,splitter=''):
+def read_col_names(infile,hnl,splitter=' '):
     il = -1
     with open(infile, 'r', encoding='utf-8',
               errors='replace') as ff:
@@ -82,6 +82,9 @@ def read_row_data1(infile,hnl,splitter=''):
             if (il == hnl):
                 break
     data1 = line.split(splitter)
-
+    
     return data1
+
+
+
 

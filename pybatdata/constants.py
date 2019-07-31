@@ -15,7 +15,7 @@ basytec_state_col = 'State'    # 0 for start of measurement,etc.
 
 # Biologic colums
 biologic_time_col = 'time/s'
-biologic_v_col = 'Ewe/V'
+biologic_v_col = 'Ecell/V'
 biologic_i_col = 'I/mA'
 biologic_loop_col = 'cycle number'
 biologic_line_col = 'Ns changes'

@@ -1,17 +1,17 @@
 import sys
 import numpy as np
 import pybatdata.constants as cte
-import pybatdata.iobat as io
-    
+
 def check_basytec(infile,hnl):
+    from pybatdata.iobat import read_col_names,read_row_data1
     problem = False
     
     # Read the column names
-    col_names = io.read_col_names(infile,hnl,splitter=' ')
+    col_names = read_col_names(infile,hnl,splitter=' ')
 
-    # Read the first row with data
-    data1 = io.read_row_data1(infile,hnl,splitter=' ')
-    print(data1) ; sys.exit()
+   # Read the first row with data
+    data1 = read_row_data1(infile,hnl,splitter=' ')
+
     # The columns in the header should match the data
     if (len(col_names) != len(data1)):
         print('WARNING from iobasytec \n',
