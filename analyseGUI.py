@@ -1,4 +1,4 @@
-from pybatdata.iobat import load_files
+from pybatdata.loadbat import load_files
 
 # Call GUI to select files
 load_files(GUI=True)

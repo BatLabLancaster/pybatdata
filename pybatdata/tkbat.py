@@ -1,6 +1,5 @@
 from tkinter import filedialog
 from tkinter import *
-import pybatdata.iobat as iobat
 
 def select_files():
     # Open a tkinter GUI to select one or more files
@@ -13,6 +12,7 @@ def select_files():
     return
 
 def select_analysis():
+    print('in progress')
     return
     
 if __name__ == "__main__":
