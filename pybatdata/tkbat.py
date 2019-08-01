@@ -44,7 +44,7 @@ def run_func(ff):
             for entry in entries:
                 print(entry.get())
 
-        button=Button(root,text="Run",command=hallo).grid(row=ii+1,column=0)
+        button=Button(root,text="Run",command=moreoptions).grid(row=ii+1,column=0)
 
 
         #msg = messagebox.showinfo( "Hello Python", "Hello {}".format(func))
