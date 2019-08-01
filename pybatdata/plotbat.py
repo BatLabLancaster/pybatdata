@@ -1,0 +1,65 @@
+import sys
+from inspect import getmembers,isfunction
+from pybatdata.tkbat import select_analysis
+import pybatdata.constants as cte
+from pybatdata.iobat import fileclass
+import pybatdata.plot_eis as eis
+import pybatdata.plot_cycling as cyc
+
+def wrapper(func, args):
+    func(*args)
+
+
+def get_func(func):
+    exp = fileclass.experiment
+        
+    if (exp == cte.experiments[0]):
+        func = getattr(cyc, func)
+    elif (exp == cte.experiments[1]):
+        func = getattr(eis, func)
+
+    return func
+
+
+def get_params_names_defaults(func):
+    params_names = func.__code__.co_varnames
+    params_default = func.__defaults__
+
+    return params_names,params_default
+
+    
+def analysis_options(GUI=False):
+    exp = fileclass.experiment
+    
+    # Select analysis and loops
+    if (exp == cte.experiments[0]):
+        funcs_tup = getmembers(cyc,isfunction)
+    elif (exp == cte.experiments[1]):
+        funcs_tup = getmembers(eis,isfunction)
+
+    funcs = [i[0] for i in funcs_tup]
+
+    if GUI:
+        select_analysis(funcs)
+    else:
+        print('\n Analysis options available for {} experiments:'.format(exp))
+        print(funcs)
+        s = input('Type the analysis you want to perform (or <Enter> to quit): ')
+        if s:
+            func = get_func(s)
+            params_names, params_default = get_params_names_defaults(func)
+
+            params = []
+            if (len(params_names)>0):
+                for ii, pp in enumerate(params_names):
+                    print('\n    Default {}={}'.format(pp,params_default[ii]))
+                    if pp=='cycles':
+                        print('    Format: 1-2')
+                    p = input('Input {} (or <Enter> to use default:'.format(pp))
+                    if not p:
+                        p = params_default[ii]
+                    params.append(pp+'='+p)
+                wrapper(func, params)
+            else:
+                func()
+    return

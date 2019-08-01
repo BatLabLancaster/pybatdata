@@ -14,6 +14,21 @@ def biologic_experiment(infile,hnl):
 
     return experiment
 
+def biologic_read_col(infile,hnl,col_name):
+    from pybatdata.iobat import read_col_names
+    col_names = read_col_names(infile,hnl,splitter='\t')
+
+    ii = col_names.index(col_name)
+
+    col = np.zeros(3)###Here
+    
+    return col
+    
+def biologic_z_col(infile):
+    from pybatdata.iobat import fileclass
+    ii = fileclass.name.index(infile)
+    print(ii)
+    return
 
 def check_biologic(infile,hnl,experiment):
     from pybatdata.iobat import read_col_names,read_row_data1
@@ -39,14 +54,18 @@ def check_biologic(infile,hnl,experiment):
                 cte.biologic_state_col]
     elif (experiment == cte.experiments[1]):
         cols = [cte.biologic_time_col, cte.biologic_v_col,
-                cte.biologic_freq_col, cte.biologic_z_col]
-    print(col_names,'### \n')
+                cte.biologic_freq_col]
+
     for col in cols:
         if (col not in col_names):
             print('WARNING from iobiologic, file: \n',
                   infile,'\n',
                   'does not contain column ',col)
             return True
-        
+
+    # Recreate the z cycle column if needed
+    if (experiment == cte.experiments[1] and
+        cte.biologic_z_col not in col_names):
+        biologic_z_col(infile)
 
     return problem

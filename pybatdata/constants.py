@@ -23,4 +23,6 @@ biologic_state_col = 'Ns changes'
 # Biologic EIS
 biologic_freq_col = 'freq/Hz'
 biologic_z_col = 'z cycle'
+biologic_Re_col = 'Re(Z)/Ohm'
+biologic_Im_col = '-Im(Z)/Ohm'
 
