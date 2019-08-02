@@ -22,9 +22,9 @@ def get_func(func):
 
 
 def get_params_names_defaults(func):
-    params_names = func.__code__.co_varnames
-    params_default = func.__defaults__
-
+    params_names = list(func.__code__.co_varnames)
+    params_default = list(func.__defaults__)
+    
     return params_names,params_default
 
     

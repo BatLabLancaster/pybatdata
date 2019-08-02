@@ -145,6 +145,7 @@ def load_files(GUI=False):
     nind = fileclass.problem.count(True)
     for ic in range(nind):
         ii = fileclass.problem.index(True)
+        print(type(fileclass.name),fileclass.name);sys.exit() #HERE
         fileclass.name.pop(ii)
         fileclass.tester.pop(ii)
         fileclass.header_nl.pop(ii)
