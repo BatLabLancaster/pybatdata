@@ -1,10 +1,5 @@
-import os,sys
-import ntpath
+import os
 import pybatdata.constants as cte
-from pybatdata.iobasytec import check_basytec
-from pybatdata.iobiologic import check_biologic, biologic_experiment
-import preparenovonix.novonix_prep as prep
-from preparenovonix.novonix_io import after_file_name
 
 class fileclass:
     # Pseudo-global variables
@@ -83,6 +78,12 @@ def read_row_data1(infile,hnl,splitter=''):
     data1 = line.split(splitter)
     
     return data1
+
+def get_column(col_name,col_units):
+    col = np.zeros(3)
+    return col
+
+
 
 
 

@@ -1,7 +1,7 @@
 from pybatdata.loadbat import load_files
 from pybatdata.plotbat import analysis_options
 from pybatdata.iobat import fileclass
-from pybatdata.plot_cycling import IV_time
+from pybatdata.plot_cycling import V_I_time
 
 fileclass.name = ['example_data/basytec_cycling.txt','example_data/biologic_cycling.mpt','example_data/novonix.csv']
 
@@ -17,5 +17,5 @@ load_files(GUI=False)
 analysis_options(GUI=False)
 
 # Or directly call the function you are interested in
-#IV_time()
+#V_I_time()
     

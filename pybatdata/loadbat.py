@@ -2,9 +2,9 @@ import os,sys
 import ntpath
 import pybatdata.tkbat as tkbat
 import pybatdata.constants as cte
-from pybatdata.iobat import fileclass, file_exists,count_header_lines
-from pybatdata.iobasytec import check_basytec
-from pybatdata.iobiologic import check_biologic, biologic_experiment
+from pybatdata.iobat import fileclass
+import pybatdata.iobat as iobat
+from pybatdata.iobiologic import prep_biologic
 import preparenovonix.novonix_prep as prep
 from preparenovonix.novonix_io import after_file_name
 
@@ -77,29 +77,44 @@ def type_experiment():
 
     # Loop over each input file
     for ii,tester in enumerate(fileclass.tester):
-        if (tester == cte.testers[1]):
-            exp = biologic_experiment(fileclass.name[ii],
-                                      fileclass.header_nl[ii])
-            fileclass.experiment[ii] = exp
+        exp = cte.experiments[0]
+
+        s = cte.separators[cte.testers.index(tester)]
+
+        col_names = iobat.read_col_names(fileclass.name[ii],
+                                         fileclass.header_nl[ii],
+                                         splitter=s)
+        col = cte.freq_col(tester)
+        if (col in col_names):
+            exp = cte.experiments[1]
+
+        fileclass.experiment[ii] = exp
 
     return
 
 
-def check_files():
-    # Initialize the list of problems
-    fileclass.problem = [False] * len(fileclass.name)
-
+def prep_files():
     # Loop over each input file
     for ii,infile in enumerate(fileclass.name):
-        print('\n * Checking: {} \n'.format(infile))
+        print('\n * Preparing: {}'.format(infile))
+        problem = False
         if (infile == 'None' or fileclass.header_nl[ii] < 2):
             continue
-        if(fileclass.tester[ii] == cte.testers[0]):
-            problem = check_basytec(infile,fileclass.header_nl[ii])
-        elif(fileclass.tester[ii] == cte.testers[1]):
-            problem = check_biologic(infile,fileclass.header_nl[ii],
-                                     fileclass.experiment[ii])
-        elif(fileclass.tester[ii] == cte.testers[2]):
+        
+        # Tester
+        tester = fileclass.tester[ii]
+        
+        # Extra file preparation if needed
+        if(tester == cte.testers[1]):
+            try:
+                prep_biologic(infile,fileclass.header_nl[ii],
+                              fileclass.experiment[ii],zcycle=True,
+                              overwrite=False,verbose=True)
+                #fileclass.name[ii] = after_file_name(infile) ## TO EXPAND
+                problem = False
+            except:
+                problem = True
+        elif(tester == cte.testers[2]):
             infile = fileclass.name[ii]
             try:
                 prep.prepare_novonix(infile, addstate=True, lprotocol=True,
@@ -108,6 +123,56 @@ def check_files():
                 problem = False
             except:
                 problem = True
+
+        fileclass.problem[ii] = problem
+    return
+
+
+def check_files():
+    # Loop over each input file
+    for ii,infile in enumerate(fileclass.name):
+        problem = False
+        print('\n * Checking: {}'.format(infile))
+        if (infile == 'None' or fileclass.header_nl[ii] < 2):
+            continue
+
+        # Tester
+        tester = fileclass.tester[ii]
+        s = cte.separators[cte.testers.index(tester)]
+
+        # Read the column names
+        col_names = iobat.read_col_names(fileclass.name[ii],
+                                         fileclass.header_nl[ii],
+                                         splitter=s)
+
+        # Read the first row with data
+        data1 = iobat.read_row_data1(fileclass.name[ii],
+                                     fileclass.header_nl[ii],
+                                     splitter=s)
+
+        # The columns in the header should match the data
+        if (len(col_names) != len(data1)):
+            print('WARNING from loadbat \n',
+                  'Columns in header={}, Data columns= {} in file:\n {}'.format(
+                      len(col_names),len(data1),infile))
+            return True
+
+        # The column header should contain some fundamental columns
+        if (fileclass.experiment[0] == cte.experiments[0]):
+            cols = [cte.time_col(tester), cte.v_col(tester),
+                    cte.i_col(tester), cte.loop_col(tester),
+                    cte.state_col(tester)]
+        elif (fileclass.experiment[0] == cte.experiments[1]):
+            cols = [cte.time_col(tester), cte.freq_col(tester),
+                    cte.Re_col(tester),cte.Im_col(tester)]
+
+        for col in cols:
+            if (col not in col_names):
+                print('WARNING from loadbat, file: \n',
+                      infile,'\n',
+                      'does not contain column ',col)
+                return True
+
         fileclass.problem[ii] = problem
     return
 
@@ -117,7 +182,7 @@ def load_files(GUI=False):
         tkbat.select_files()
 
     # Check that all the files exists
-    file_exists()
+    iobat.file_exists()
     # Remove files that do not exist
     nind = fileclass.name.count('None')
     for ic in range(nind):
@@ -134,18 +199,23 @@ def load_files(GUI=False):
         fileclass.tester.pop(ii)
 
     # Count header lines
-    count_header_lines()
+    iobat.count_header_lines()
 
     # Type of experiment (Cycling,EIS)
     type_experiment()
+
+    # Initialize the list of problems
+    fileclass.problem = [False] * len(fileclass.name)
+
+    # Prepare files if needed
+    prep_files()
     
-    # Test and prepare files if needed
+    # Check files 
     check_files()
     # Remove files with problems
     nind = fileclass.problem.count(True)
     for ic in range(nind):
-        ii = fileclass.problem.index(True)
-        print(type(fileclass.name),fileclass.name);sys.exit() #HERE
+        ii = fileclass.problem.index(True)        
         fileclass.name.pop(ii)
         fileclass.tester.pop(ii)
         fileclass.header_nl.pop(ii)

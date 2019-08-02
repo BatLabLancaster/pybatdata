@@ -1,5 +1,5 @@
 import sys
-from inspect import getmembers,isfunction
+from inspect import currentframe,getargvalues,getmembers,isfunction
 from pybatdata.tkbat import select_analysis
 import pybatdata.constants as cte
 from pybatdata.iobat import fileclass
@@ -22,9 +22,18 @@ def get_func(func):
 
 
 def get_params_names_defaults(func):
-    params_names = list(func.__code__.co_varnames)
-    params_default = list(func.__defaults__)
-    
+    params_names = []
+    params_default = []
+    #args, _, _, values = getargvalues(func) ##HERE
+#    if func.__code__.co_varnames:
+#        params_names = list(func.__code__.co_varnames)
+#        if func.__defaults__:
+#            params_default = list(func.__defaults__)
+    print(args,type(args))
+    print(values,type(values),'##')
+    for i in args:
+        print(i,values[i])
+    sys.exit()
     return params_names,params_default
 
     
@@ -51,11 +60,20 @@ def analysis_options(GUI=False):
 
             params = []
             if (len(params_names)>0):
+                print('\nEnter parameters following the information:')
                 for ii, pp in enumerate(params_names):
-                    print('\n    Default {}={}'.format(pp,params_default[ii]))
-                    if pp=='cycles':
-                        print('    Format: 1-2')
-                    p = input('Input {} (or <Enter> to use default:'.format(pp))
+                    if params_default:
+                        text= 'Input {} (or <Enter> to use default={}):'.format(
+                                pp,params_default[ii])
+                        if pp=='cycles':
+                            text='Input {} (or <Enter> to use default={}, Format=1-2):'.format(
+                                pp,params_default[ii])
+                    else:
+                        text= 'Input {}:'.format(pp)
+                        if pp=='cycles':
+                            text='Input {} (Format=1-2):'.format(pp)
+
+                    p = input(text)
                     if not p:
                         p = params_default[ii]
                     params.append(pp+'='+p)

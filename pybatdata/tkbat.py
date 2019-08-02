@@ -42,9 +42,11 @@ def run_func(root,ff):
             entries.append(en)
 
         def get_entries():
-            for entry in entries:
-                pp = entry.get()
-                print(pp,type(pp))
+            for jj,entry in enumerate(entries):
+                if not entry.get():
+                    pp = params_default[ii]
+                else:
+                    pp = entry.get()
                 params.append(pp)
             wrapper(func,params)
                 
