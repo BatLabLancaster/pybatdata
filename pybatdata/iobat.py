@@ -1,4 +1,5 @@
 import os
+import numpy as np
 import pybatdata.constants as cte
 
 class fileclass:
@@ -79,11 +80,26 @@ def read_row_data1(infile,hnl,splitter=''):
     
     return data1
 
-def get_column(col_name,col_units):
-    col = np.zeros(3)
+def get_column(infile,hnl,col_name,splitter=None,outtype=None):
+    # Find which column to read
+    col_names = read_col_names(infile,hnl,splitter=splitter)
+    icol = col_names.index(col_name)
+
+    # Read the column data as a list
+    column_data = []
+    
+    il = -1
+    with open(infile, 'r', encoding='utf-8',
+              errors='replace') as ff:
+        for line in ff:
+            il += 1
+            if (il > hnl):
+                val = line.split(splitter)[icol].rstrip()
+                column_data.append(val)
+
+        # Transform the list into a numpy array
+        column_data = np.array(column_data)
+
+        col = column_data.astype(getattr(np, outtype))   
+
     return col
-
-
-
-
-

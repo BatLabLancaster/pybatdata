@@ -1,5 +1,6 @@
 import sys
-from inspect import currentframe,getargvalues,getmembers,isfunction
+import ast
+import inspect
 from pybatdata.tkbat import select_analysis
 import pybatdata.constants as cte
 from pybatdata.iobat import fileclass
@@ -8,6 +9,15 @@ import pybatdata.plot_cycling as cyc
 
 def wrapper(func, args):
     func(*args)
+
+
+def top_level_functions(body):
+    return (f for f in body if isinstance(f, ast.FunctionDef))
+
+
+def parse_ast(filename):
+    with open(filename, "rt") as file:
+        return ast.parse(file.read(), filename=filename)
 
 
 def get_func(func):
@@ -21,32 +31,27 @@ def get_func(func):
     return func
 
 
-def get_params_names_defaults(func):
-    params_names = []
-    params_default = []
-    args, _, _, values = getargvalues(func) ##HERE
-#    if func.__code__.co_varnames:
-#        params_names = list(func.__code__.co_varnames)
-#        if func.__defaults__:
-#            params_default = list(func.__defaults__)
-    print(args,type(args))
-    #print(values,type(values),'##')
-    for i in args:
-        print(i,values[i])
-    sys.exit()
-    return params_names,params_default
-
+def get_default_args(func):
+    signature = inspect.signature(func)
+    return {
+        k: v.default
+        for k, v in signature.parameters.items()
+        if v.default is not inspect.Parameter.empty
+    }
     
 def analysis_options(GUI=False):
     exp = fileclass.experiment
-    
     # Select analysis and loops
     if (exp == cte.experiments[0]):
-        funcs_tup = getmembers(cyc,isfunction)
+        filename = cyc.__file__
     elif (exp == cte.experiments[1]):
-        funcs_tup = getmembers(eis,isfunction)
+        filename = eis.__file__
 
-    funcs = [i[0] for i in funcs_tup]
+    funcs = []
+    tree = parse_ast(filename)
+    for func in top_level_functions(tree.body):
+        funcs.append(func.name)
+    print(funcs) 
 
     if GUI:
         select_analysis(funcs)
@@ -55,19 +60,22 @@ def analysis_options(GUI=False):
         print(funcs)
         s = input('Type the analysis you want to perform (or <Enter> to quit): ')
         if s:
-            func = get_func(s)
-            params_names, params_default = get_params_names_defaults(func)
-
             params = []
-            if (len(params_names)>0):
+            
+            func = get_func(s)
+            params_default = get_default_args(func)
+            if (len(params_default)>0):
                 print('\nEnter parameters following the information:')
-                for ii, pp in enumerate(params_names):
-                    if params_default:
+                ii = -1
+                for pp,dict_ in params_default.items():
+                    ii += 1
+                    val = params_default.get(pp)
+                    if val:
                         text= 'Input {} (or <Enter> to use default={}):'.format(
-                                pp,params_default[ii])
+                                pp,val)
                         if pp=='cycles':
                             text='Input {} (or <Enter> to use default={}, Format=1-2):'.format(
-                                pp,params_default[ii])
+                                pp,val)
                     else:
                         text= 'Input {}:'.format(pp)
                         if pp=='cycles':
@@ -75,8 +83,9 @@ def analysis_options(GUI=False):
 
                     p = input(text)
                     if not p:
-                        p = params_default[ii]
-                    params.append(pp+'='+p)
+                        p = val
+                    params.append(p)
+
                 wrapper(func, params)
             else:
                 func()

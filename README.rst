@@ -21,7 +21,7 @@ can be install using ``pip``: numpy, pathlib, preparenovonix.
 Contributing
 ------------
 
-If you have new analysis code add it as a function within the pybatdata/plot_cycling.py or pybatdata/plot_eis.py, depending if the type of analysis is for Cycling or EIS.
+If you have new analysis code add it as a function within the pybatdata/plot_cycling.py or pybatdata/plot_eis.py, depending if the type of analysis is for Cycling or EIS. Follow the example function V_I_time to see how to call the diferent functions to read the data.
 
 If you want to enhance the code to be able to deal with a new equipment or modify the default column names, update the file pybatdata/constants.py.
 

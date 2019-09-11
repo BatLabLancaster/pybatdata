@@ -3,7 +3,8 @@ from pybatdata.plotbat import analysis_options
 from pybatdata.iobat import fileclass
 from pybatdata.plot_cycling import V_I_time
 
-fileclass.name = ['example_data/basytec_cycling.txt','example_data/biologic_cycling.mpt','example_data/novonix.csv']
+fileclass.name = ['example_data/basytec_cycling.txt','example_data/biologic_cycling.mpt']
+#,'example_data/novonix.csv']
 
 #fileclass.name = ['/home/violeta/BatLab/batdata/biologic/Cell78_zycle_missing.mpt','/home/violeta/BatLab/batdata/biologic/Cell99_100SOC_0mon_CA1.mpt','/home/violeta/BatLab/batdata/biologic/Cell75_GEIS_10SOC_-5degC_CA2.mpt']
 
