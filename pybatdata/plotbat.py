@@ -24,13 +24,13 @@ def get_func(func):
 def get_params_names_defaults(func):
     params_names = []
     params_default = []
-    #args, _, _, values = getargvalues(func) ##HERE
+    args, _, _, values = getargvalues(func) ##HERE
 #    if func.__code__.co_varnames:
 #        params_names = list(func.__code__.co_varnames)
 #        if func.__defaults__:
 #            params_default = list(func.__defaults__)
     print(args,type(args))
-    print(values,type(values),'##')
+    #print(values,type(values),'##')
     for i in args:
         print(i,values[i])
     sys.exit()
